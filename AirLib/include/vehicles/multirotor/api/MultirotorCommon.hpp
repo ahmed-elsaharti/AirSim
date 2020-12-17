@@ -67,6 +67,23 @@ struct MultirotorApiParams {
     int obs_window = 0;
 };
 
+struct RotorStates {
+    RotorData rotor_1;
+    RotorData rotor_2;
+    RotorData rotor_3;
+    RotorData rotor_4;
+    uint64_t timestamp;
+
+    RotorStates()
+    {}
+    RotorStates(const RotorData& rotor_1_val, const RotorData& rotor_2_val,
+        const RotorData& rotor_3_val, const RotorData& rotor_4_val, uint64_t timestamp_val)
+        : rotor_1(rotor_1_val), rotor_2(rotor_2_val), rotor_3(rotor_3_val), rotor_4(rotor_4_val), timestamp(timestamp_val)
+    {
+    }
+};
+
+
 struct MultirotorState {
     CollisionInfo collision;
     Kinematics::State kinematics_estimated;

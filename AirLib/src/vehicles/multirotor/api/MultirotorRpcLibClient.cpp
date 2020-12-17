@@ -221,6 +221,11 @@ bool MultirotorRpcLibClient::setSafety(SafetyEval::SafetyViolationType enable_re
 }
 
 //status getters
+RotorStates MultirotorRpcLibClient::getRotorStates(const std::string& vehicle_name)
+{
+    return static_cast<rpc::client*>(getClient())->call("getRotorStates", vehicle_name).
+        as<MultirotorRpcLibAdapators::RotorStates>().to();
+}
 MultirotorState MultirotorRpcLibClient::getMultirotorState(const std::string& vehicle_name)
 {
     return static_cast<rpc::client*>(getClient())->call("getMultirotorState", vehicle_name).

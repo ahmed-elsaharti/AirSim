@@ -522,6 +522,40 @@ public:
         }
     };
 
+    struct RotorData {
+        //msr::airlib::TTimePoint time_stamp;
+        msr::airlib::real_T thrust;
+        msr::airlib::real_T torque_scaler;
+        msr::airlib::real_T speed;
+
+        MSGPACK_DEFINE_MAP(thrust, torque_scaler, speed);
+
+        RotorData()
+        {}
+
+        RotorData(const msr::airlib::RotorData& s)
+        {
+            //time_stamp = s.time_stamp;
+            thrust = s.thrust;
+            torque_scaler = s.torque_scaler;
+            speed = s.speed;
+        }
+
+        msr::airlib::RotorData to() const
+        {
+            msr::airlib::RotorData d;
+
+            //d.time_stamp = time_stamp;
+            d.thrust = thrust;
+            d.torque_scaler = torque_scaler;
+            d.speed = speed;
+
+
+            return d;
+        }
+    };
+
+
     struct BarometerData {
         msr::airlib::TTimePoint time_stamp;
         msr::airlib::real_T altitude;

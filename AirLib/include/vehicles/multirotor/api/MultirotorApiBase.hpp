@@ -10,6 +10,7 @@
 #include "physics/Kinematics.hpp"
 #include "physics/Environment.hpp"
 #include "api/VehicleApiBase.hpp"
+#include "vehicles/multirotor/RotorActuator.hpp"
 
 #include <atomic>
 #include <thread>
@@ -123,6 +124,39 @@ public: //these APIs uses above low level APIs
         float obs_avoidance_vel, const Vector3r& origin, float xy_length, float max_z, float min_z);
 
     /************************* high level status APIs *********************************/
+    msr::airlib::RotorData GrabRotorParams() const
+    {
+        
+        msr::airlib::RotorActuator::Output Rotor_In = rotors_.at(1).getOutput();
+        msr::airlib::RotorData Rotor_Out;
+        Rotor_Out.speed = 1.0f;
+        Rotor_Out.thrust = 2.0f;
+        Rotor_Out.torque_scaler = 3.0f;
+        return Rotor_Out;
+    }
+
+    RotorActuator::Output getRotorOutput(uint rotor_index) const
+    {
+        return rotors_.at(rotor_index).getOutput();
+    }
+
+    RotorStates getRotorStates() const
+    {
+        RotorStates rotors;
+        rotors.timestamp = 321;
+//        msr::airlib::RotorData test;
+//        auto test = GrabRotorParams(1);
+        uint x = 0;
+        const auto rotor_output = getRotorOutput(x);
+        rotors.rotor_1.speed = rotor_output.speed;
+        rotors.rotor_1.thrust = rotor_output.thrust;
+        rotors.rotor_1.torque_scaler = rotor_output.torque_scaler;
+//        rotors.rotor_1 = msr::airlib::MultirotorApiBase::GrabRotorParams();
+//        rotors.rotor_2 = msr::airlib::MultirotorApiBase::GrabRotorParams();
+//        rotors.rotor_3 = msr::airlib::MultirotorApiBase::GrabRotorParams();
+//        rotors.rotor_4 = msr::airlib::MultirotorApiBase::GrabRotorParams();
+        return rotors;
+    }
     MultirotorState getMultirotorState() const
     {
         MultirotorState state;
@@ -336,7 +370,7 @@ private: //variables
     RCData rc_data_trims_;
     shared_ptr<SafetyEval> safety_eval_ptr_;
     float obs_avoidance_vel_ = 0.5f;
-
+    vector<RotorActuator> rotors_;
     //TODO: make this configurable?
     float landing_vel_ = 0.2f; //velocity to use for landing
     float approx_zero_vel_ = 0.05f;

@@ -167,6 +167,10 @@ MultirotorRpcLibServer::MultirotorRpcLibServer(ApiProvider* api_provider, string
 
     //getters
     (static_cast<rpc::server*>(getServer()))->
+        bind("getRotorStates", [&](const std::string& vehicle_name) -> MultirotorRpcLibAdapators::RotorStates {
+        return MultirotorRpcLibAdapators::RotorStates(getVehicleApi(vehicle_name)->getRotorStates());
+            });
+    (static_cast<rpc::server*>(getServer()))->
         bind("getMultirotorState", [&](const std::string& vehicle_name) -> MultirotorRpcLibAdapators::MultirotorState {
         return MultirotorRpcLibAdapators::MultirotorState(getVehicleApi(vehicle_name)->getMultirotorState()); 
     });

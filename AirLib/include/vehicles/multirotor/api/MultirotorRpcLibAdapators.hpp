@@ -39,6 +39,35 @@ public:
         }
     };
 
+    struct RotorStates {
+        RotorData rotor_1;
+        RotorData rotor_2;
+        RotorData rotor_3;
+        RotorData rotor_4;
+        uint64_t timestamp;
+
+        MSGPACK_DEFINE_MAP(rotor_1, rotor_2, rotor_3, rotor_4, timestamp);
+
+        RotorStates()
+        {}
+
+        RotorStates(const msr::airlib::RotorStates& s)
+        {
+            rotor_1 = s.rotor_1;
+            rotor_2 = s.rotor_2;
+            rotor_3 = s.rotor_3;
+            rotor_4 = s.rotor_4;
+            timestamp = s.timestamp;
+        }
+
+        msr::airlib::RotorStates to() const
+        {
+            return msr::airlib::RotorStates(rotor_1.to(), rotor_2.to(), rotor_3.to(), rotor_4.to(), timestamp );
+        }
+    };
+
+
+
     struct MultirotorState {
         CollisionInfo collision;
         KinematicsState kinematics_estimated;

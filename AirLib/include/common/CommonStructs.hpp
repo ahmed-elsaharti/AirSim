@@ -304,6 +304,16 @@ struct LidarData {
     {}
 };
 
+struct RotorData {
+    //TTimePoint time_stamp = 0;
+    real_T thrust = 0;
+    real_T torque_scaler = 0;
+    real_T speed = 0;
+
+    RotorData()
+    {}
+};
+
 struct DistanceSensorData {
     TTimePoint time_stamp;
     real_T distance;        //meters
