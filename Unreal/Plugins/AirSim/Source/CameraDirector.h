@@ -45,6 +45,7 @@ public:
     void inputEventBackupView();
     void inputEventNoDisplayView();
 	void inputEventFrontView();
+    void toggleFixedPos();
 
 public:
     ACameraDirector();
@@ -88,8 +89,10 @@ private:
 
     FVector camera_start_location_;
     FVector initial_ground_obs_offset_;
+    FVector fixed_pos_val_;
     FRotator camera_start_rotation_;
     bool ext_obs_fixed_z_;
+    bool ext_obs_fixed_pos_ = false;
     int follow_distance_;
     bool camera_rotation_lag_enabled_;
 };

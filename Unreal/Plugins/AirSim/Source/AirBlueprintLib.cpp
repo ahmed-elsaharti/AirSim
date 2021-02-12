@@ -673,7 +673,7 @@ bool UAirBlueprintLib::GetLastObstaclePosition(const AActor* actor, const FVecto
     return has_hit;
 }
 
-void UAirBlueprintLib::FollowActor(AActor* follower, const AActor* followee, const FVector& offset, bool fixed_z, float fixed_z_val)
+void UAirBlueprintLib::FollowActor(AActor* follower, const AActor* followee, const FVector& offset, FVector& fixed_pos_val, bool fixed_z, bool fixed_pos,float fixed_z_val)
 {
     //can we see followee?
     FHitResult hit;
@@ -681,11 +681,18 @@ void UAirBlueprintLib::FollowActor(AActor* follower, const AActor* followee, con
         return;
     }
     FVector actor_location = followee->GetActorLocation() + FVector(0, 0, 4);
-    FVector next_location = actor_location + offset;
+    FVector next_location;
+    if (fixed_pos) {
+        next_location = fixed_pos_val;
+    }
+    else
+    {
+        next_location = actor_location + offset;
+    }
     if (fixed_z)
         next_location.Z = fixed_z_val;
 
-    if (GetObstacle(follower, next_location, actor_location, hit, followee)) {
+    if (GetObstacle(follower, next_location, actor_location, hit, followee) && !fixed_pos) {
         next_location = hit.ImpactPoint + offset;
 
         if (GetObstacle(follower, next_location, actor_location, hit, followee)) {

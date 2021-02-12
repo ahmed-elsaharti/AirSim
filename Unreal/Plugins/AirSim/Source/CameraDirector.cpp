@@ -38,7 +38,7 @@ void ACameraDirector::Tick(float DeltaTime)
         //do nothing, we have camera turned off
     }
     else { //make camera move in desired way
-        UAirBlueprintLib::FollowActor(ExternalCamera, follow_actor_, initial_ground_obs_offset_, ext_obs_fixed_z_);
+        UAirBlueprintLib::FollowActor(ExternalCamera, follow_actor_, initial_ground_obs_offset_, fixed_pos_val_, ext_obs_fixed_z_, ext_obs_fixed_pos_);
     }
 }
 
@@ -65,7 +65,7 @@ void ACameraDirector::initializeForBeginPlay(ECameraDirectorMode view_mode,
     camera_start_rotation_ = ExternalCamera->GetActorRotation();
     initial_ground_obs_offset_ = camera_start_location_ - 
         (follow_actor_ ? follow_actor_->GetActorLocation() : FVector::ZeroVector);
-
+    fixed_pos_val_ = initial_ground_obs_offset_;
     //set initial view mode
     switch (mode_) {
     case ECameraDirectorMode::CAMERA_DIRECTOR_MODE_FLY_WITH_ME: inputEventFlyWithView(); break;
@@ -172,6 +172,7 @@ void ACameraDirector::setupInputBindings()
 {
     UAirBlueprintLib::EnableInput(this);
 
+    UAirBlueprintLib::BindActionToKey("inputEventToggleFixedPos", EKeys::P, this, &ACameraDirector::toggleFixedPos);
     UAirBlueprintLib::BindActionToKey("inputEventFpvView", EKeys::F, this, &ACameraDirector::inputEventFpvView);
     UAirBlueprintLib::BindActionToKey("inputEventFlyWithView", EKeys::B, this, &ACameraDirector::inputEventFlyWithView);
     UAirBlueprintLib::BindActionToKey("inputEventGroundView", EKeys::Backslash, this, &ACameraDirector::inputEventGroundView);
@@ -345,4 +346,10 @@ void ACameraDirector::notifyViewModeChanged()
     } else {
         gameViewport->bDisableWorldRendering = 0;
     }
+}
+
+void ACameraDirector::toggleFixedPos()
+{
+    ext_obs_fixed_pos_ = !ext_obs_fixed_pos_;
+    fixed_pos_val_ = ExternalCamera->GetActorLocation();
 }
