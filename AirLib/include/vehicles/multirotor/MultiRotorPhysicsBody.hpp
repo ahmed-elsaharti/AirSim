@@ -178,8 +178,8 @@ private: //methods
         //Drone is seen as central body that is connected to propellers via arm. We approximate central body as box of size x, y, z.
         //The drag depends on area exposed so we also add area of propellers to approximate drag they may introduce due to their area.
         //while moving along any axis, we find area that will be exposed in that direction
-        real_T propeller_area = M_PIf * params.rotor_params.propeller_diameter * params.rotor_params.propeller_diameter;
-        real_T propeller_xsection = M_PIf * params.rotor_params.propeller_diameter * params.rotor_params.propeller_height;
+        real_T propeller_area = M_PIf * params.rotor_params.propeller_diameter/2 * params.rotor_params.propeller_diameter/2;
+        real_T propeller_xsection = params.rotor_params.propeller_diameter * params.rotor_params.propeller_height;
 
         real_T top_bottom_area = params.body_box.x() * params.body_box.y();
         real_T left_right_area = params.body_box.x() * params.body_box.z();
